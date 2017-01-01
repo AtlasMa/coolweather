@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class CoolWeatherDB {
 
@@ -77,6 +78,8 @@ public class CoolWeatherDB {
 				list.add(province);
 			} while (cursor.moveToNext());
 		}
+		if(cursor!=null)
+			cursor.close();
 		return list;
 	}
 
@@ -112,6 +115,8 @@ public class CoolWeatherDB {
 				list.add(city);
 			} while (cursor.moveToNext());
 		}
+		if(cursor!=null)
+			cursor.close();
 		return list;
 	}
 
@@ -125,6 +130,10 @@ public class CoolWeatherDB {
 			values.put("county_code", county.getCountyCode());
 			values.put("city_id", county.getCityId());
 			db.insert("County", null, values);
+			//Log.d("完成一次", "将County实例存储到数据库。");
+			//Log.d("saveCounty-county_name=", ""+county.getCountyName());
+			//Log.d("saveCounty-county_code=", ""+county.getCountyCode());
+			//Log.d("saveCounty-city_id=", ""+county.getCityId());
 		}
 	}
 
@@ -139,14 +148,14 @@ public class CoolWeatherDB {
 			do {
 				County county = new County();
 				county.setId(cursor.getInt(cursor.getColumnIndex("id")));
-				county.setCountyName(cursor.getString(cursor
-						.getColumnIndex("county_name")));
-				county.setCountyCode(cursor.getString(cursor
-						.getColumnIndex("county_code")));
+				county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
+				county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
 				county.setCityId(cityId);
 				list.add(county);
 			} while (cursor.moveToNext());
 		}
+		if(cursor!=null)
+			cursor.close();
 		return list;
 	}
 
